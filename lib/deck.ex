@@ -25,7 +25,8 @@ defmodule Deck do
         fn s -> %Card{value: v, suit: s} end)
       end)
     
-    List.flatten(cards)
+    cards = List.flatten(cards)
+    %Deck{cards: cards}
   end
 
   @doc """
@@ -34,7 +35,7 @@ defmodule Deck do
   Returns the shuffled deck.
   """
   def shuffle(deck) do
-    Enum.shuffle(deck)
+    %{deck | cards: Enum.shuffle(deck.cards)}
   end
 
   @doc """
@@ -46,9 +47,9 @@ defmodule Deck do
 
   Returns {:error, msg} if `length(deck) === 0`
   """
-  def draw(deck) when length(deck) > 0 do
-    [head | tail] = deck
-    {:ok, {head, tail}}
+  def draw(deck) when length(deck.cards) > 0 do
+    [head | tail] = deck.cards
+    {:ok, {head, %{deck | cards: tail}}}
   end
 
   def draw(_deck) do
