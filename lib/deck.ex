@@ -1,9 +1,21 @@
 defmodule Deck do
+  @moduledoc """
+  A module to represent a deck of playing cards.
+  """
   alias Deck.Card, as: Card
 
   @enforce_keys [:cards]
   defstruct [:cards]
 
+  @doc """
+  Creates a Deck struct which contains a list of cards.
+  This creates a standard playing card deck with cards
+  2-10, A, J, Q, and K and one for each suit. Aces and
+  face cards are represented as numbers. The list of
+  cards is NOT shuffled.
+
+  Returns a `Deck` with a non shuffled list of `Card`
+  """
   def new() do
     values = Card.get_card_values()
     suits = Card.get_card_suits()
@@ -16,10 +28,24 @@ defmodule Deck do
     List.flatten(cards)
   end
 
+  @doc """
+  Shuffles the give deck of cards.
+
+  Returns the shuffled deck.
+  """
   def shuffle(deck) do
     Enum.shuffle(deck)
   end
 
+  @doc """
+  Draws a card from the top of the deck.
+
+  Returns {:ok, {drawn, deck}} if `length(deck) > 0`
+  where drawn is the card on top of the deck and deck is
+  the deck without the card that was just drawn.
+
+  Returns {:error, msg} if `length(deck) === 0`
+  """
   def draw(deck) when length(deck) > 0 do
     [head | tail] = deck
     {:ok, {head, tail}}
